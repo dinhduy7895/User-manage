@@ -39,8 +39,6 @@ public class user_list extends HttpServlet {
 		listUsers = userBo.getListUsers();
 		HttpSession session = request.getSession() ;
 		session.setAttribute("listUsers", listUsers);
-		String msg = (String)request.getAttribute("msg");
-		session.setAttribute("msg", "update thanh cong");
 		response.sendRedirect("welcome.jsp");
 	}
 

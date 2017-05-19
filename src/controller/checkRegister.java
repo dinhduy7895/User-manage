@@ -37,6 +37,7 @@ public class checkRegister extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession() ;
 		String register = request.getParameter("register");
 		if(register != null){
 			String username = request.getParameter("username");
@@ -44,17 +45,24 @@ public class checkRegister extends HttpServlet {
 			String pass = request.getParameter("pass");
 			String rePass = request.getParameter("rePass");
 			int role = Integer.parseInt(request.getParameter("role"));
-			if(!pass.equals(rePass)) response.sendRedirect("register.jsp?error=pass khong khop");
+			if(!pass.equals(rePass)){
+				session.setAttribute("msg", "Password khong khop");
+				response.sendRedirect("register.jsp");
+			}
 			UserBo userBo = new UserBo();	
-			if(userBo.isExist(username))response.sendRedirect("register.jsp?error=Username da ton tai");
+			if(userBo.isExist(username)){
+				session.setAttribute("msg", "Username da ton tai");
+				response.sendRedirect("register.jsp");
+			}
 			User user = userBo.register(username, name, pass, role);
 			if(user!=null){	
-				HttpSession session = request.getSession() ;
+				session.setAttribute("msg", "Them user moi thanh cong");
 				session.setAttribute("user", user);				
 				RequestDispatcher rd = request.getRequestDispatcher("user_list");
 				rd.forward(request, response);
 			}else{
-				RequestDispatcher rd = request.getRequestDispatcher("/register.jsp?error=khong the register");
+				session.setAttribute("msg", "Khong the register");
+				RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
 				rd.forward(request, response);
 			}
 		}

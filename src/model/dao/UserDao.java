@@ -124,9 +124,8 @@ public class UserDao {
 			pst.setString(3, name);
 			pst.setInt(4, role);
 			pst.setInt(5, id);
-
 			check = pst.executeUpdate();
-			
+			System.out.println(check+" "+ id);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

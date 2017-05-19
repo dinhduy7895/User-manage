@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.bean.User;
 import model.bo.UserBo;
@@ -41,13 +42,18 @@ public class user_delete extends HttpServlet {
 		User user = null;
 		UserBo userBo = new UserBo();
 		user = userBo.getUser(id);
+		HttpSession session = request.getSession();
+
 		if(user!=null){
 			boolean check = false;
 			check = userBo.delete(id);
 			if(check == false ){
-				response.sendRedirect("welcome.jsp");
+				session.setAttribute("msg", "Delete khong thanh cong");
+
+				response.sendRedirect("user_list.jsp");
 			}
 			else {
+				session.setAttribute("msg", "Delete  thanh cong");
 			RequestDispatcher rd = request.getRequestDispatcher("user_list");
 			rd.forward(request, response);
 			}
